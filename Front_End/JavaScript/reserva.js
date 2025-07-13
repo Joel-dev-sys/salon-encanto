@@ -56,7 +56,18 @@ const salas = [
   }
 ];
 
+//Datos de turnos Disponibles
+
+const turnosDisponibles = [
+  { inicio: "08:00", fin: "11:00" },
+  { inicio: "12:00", fin: "15:00" },
+  { inicio: "16:00", fin: "19:00" },
+  { inicio: "20:00", fin: "23:00" }
+];
+
 //Datos servicios Adicionales:
+
+const serviciosMultiples = ["audiovisual", "mobiliario"];
 
 const serviciosPorCategoria = {
   pequeno: {
@@ -134,7 +145,7 @@ const serviciosPorCategoria = {
       { nombre: "Hasta 10 autos", precio: 120 }
     ],
     mobiliario: [
-      { nombre: "100 Sillas", precio: 150 },
+      { nombre: "30 Sillas", precio: 100 },
       { nombre: "15 Mesas redondas", precio: 180 },
     ]
   }
@@ -178,12 +189,14 @@ function mostrarSalas(filtro) {
       boton.className = "btn btn-primary";
       boton.textContent = "Seleccionar";
       boton.addEventListener("click", () => {
-  salaSeleccionada = sala;
-  document.getElementById("precioBase").innerHTML = `<strong>Precio base:</strong> S/. ${sala.precio.toFixed(2)}`;
-  mostrarServiciosAdicionales(sala.categoria); // 🔹 AÑADIDO
-  calcularTotal();
-  generarCalendarioDisponibilidad(sala.nombre);
-  new bootstrap.Modal(document.getElementById("modal-reserva")).show();
+      console.log("Clic en seleccionar");
+      salaSeleccionada = sala;
+      document.getElementById("precioBase").innerHTML = `<strong>Precio base:</strong> S/. ${sala.precio.toFixed(2)}`;
+      mostrarServiciosAdicionales(sala.categoria); // 🔹 AÑADIDO
+      mostrarTurnosDisponibles(); // Muestra los turnos al abrir el modal
+      calcularTotal();
+      generarCalendarioDisponibilidad(sala.nombre);
+      new bootstrap.Modal(document.getElementById("modal-reserva")).show();
 });
 
     cardBody.appendChild(boton);
@@ -196,10 +209,46 @@ function mostrarSalas(filtro) {
   });
 }
 
+// Mostrar Turnos Disponibles
+
+function mostrarTurnosDisponibles() {
+  const contenedor = document.getElementById("turnos-disponibles");
+  contenedor.innerHTML = "";
+
+  turnosDisponibles.forEach((turno, i) => {
+    const id = `turno_${i}`;
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = id;
+    checkbox.className = "form-check-input me-2 turno-checkbox";
+    checkbox.dataset.inicio = turno.inicio;
+    checkbox.dataset.fin = turno.fin;
+    checkbox.addEventListener("change", calcularTotal);
+
+    const label = document.createElement("label");
+    label.className = "form-check-label me-3";
+    label.setAttribute("for", id);
+    label.textContent = `Turno ${i + 1}: ${turno.inicio} - ${turno.fin}`;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "form-check";
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(label);
+
+    contenedor.appendChild(wrapper);
+  });
+}
+
+//Turnos consecutivos
+
+function turnosSonConsecutivos(indices) {
+  return indices.every((val, i, arr) => i === 0 || val === arr[i - 1] + 1);
+}
+
 // Mostrar servicios adicionales
 
 function mostrarServiciosAdicionales(categoria) {
-  console.log("Mostrando servicios para categoría:", categoria); // <-- Añadir esto
+  console.log("Mostrando servicios para categoría:", categoria);
   const contenedor = document.getElementById("servicios-adicionales");
   contenedor.innerHTML = "";
 
@@ -208,52 +257,154 @@ function mostrarServiciosAdicionales(categoria) {
 
   for (const tipo in servicios) {
     const grupo = servicios[tipo];
-    const grupoDiv = document.createElement("div");
-    grupoDiv.classList.add("mb-2");
 
-    const label = document.createElement("label");
-    label.innerHTML = `<strong>${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</strong>`;
-    grupoDiv.appendChild(label);
+    const grupoDiv = document.createElement("div");
+    grupoDiv.classList.add("mb-3");
+
+    const titulo = document.createElement("label");
+    titulo.innerHTML = `<strong>${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</strong>`;
+    grupoDiv.appendChild(titulo);
 
     grupo.forEach(opcion => {
       const id = `servicio_${contador++}`;
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.className = "form-check-input me-2";
-      checkbox.value = opcion.precio;
-      checkbox.id = id;
-      checkbox.dataset.nombre = opcion.nombre;
-      checkbox.addEventListener("change", calcularTotal);
+      const input = document.createElement("input");
+
+      const esMultiple = serviciosMultiples.includes(tipo);
+      input.type = esMultiple ? "checkbox" : "radio";
+      input.name = esMultiple ? `${tipo}_${id}` : tipo; // radio comparte nombre; checkbox no
+      input.className = "form-check-input me-2";
+      input.value = opcion.precio;
+      input.id = id;
+      input.dataset.nombre = opcion.nombre;
+      input.addEventListener("change", calcularTotal);
 
       const label = document.createElement("label");
-      label.className = "form-check-label me-3";
+      label.className = "form-check-label";
       label.setAttribute("for", id);
       label.textContent = `${opcion.nombre} (+S/.${opcion.precio})`;
 
       const wrapper = document.createElement("div");
       wrapper.className = "form-check";
-      wrapper.appendChild(checkbox);
+      wrapper.appendChild(input);
       wrapper.appendChild(label);
 
       grupoDiv.appendChild(wrapper);
     });
 
-    contenedor.appendChild(grupoDiv);
+    const col = document.createElement("div");
+    col.className = "col-md-6"; // dos columnas
+    col.appendChild(grupoDiv);
+    contenedor.appendChild(col);
   }
 }
 
 // Calcular total
-function calcularTotal() {
-  let total = salaSeleccionada ? salaSeleccionada.precio : 0;
-  document.querySelectorAll("#modal-reserva input[type=checkbox]").forEach(cb => {
-    if (cb.checked) total += parseFloat(cb.value);
+ function calcularTotal() {
+  let total = 0;
+
+  if (salaSeleccionada) {
+    const turnosSeleccionados = document.querySelectorAll(".turno-checkbox:checked").length;
+    total += salaSeleccionada.precio * turnosSeleccionados;
+    document.getElementById("precioBase").innerHTML = `<strong>Precio base:</strong> S/. ${(salaSeleccionada.precio * turnosSeleccionados).toFixed(2)}`;
+  }
+
+  document.querySelectorAll("#modal-reserva .form-check-input").forEach(input => {
+  if (input.checked && !input.classList.contains("turno-checkbox")) {
+    const valor = parseFloat(input.value);
+    if (!isNaN(valor)) {
+      total += valor;
+    }
+  }
   });
-  document.getElementById("totalPrecio").innerHTML = `<strong>Total:</strong> S/. ${total.toFixed(2)}`;
+
+    // Calcular recargos o descuentos por anticipación
+
+   const inputFechaInicio = document.getElementById("fecha-inicio");
+let fechaReserva = null;
+let diferenciaDias = 0;
+let ajuste = 0;
+let mensajeAjuste = "";
+
+if (inputFechaInicio && inputFechaInicio.value) {
+  fechaReserva = new Date(inputFechaInicio.value);
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // Solo fecha sin hora
+
+  diferenciaDias = Math.floor((fechaReserva - hoy) / (1000 * 60 * 60 * 24));
+
+  if (diferenciaDias === 1) {
+    ajuste = total * 0.15;
+    total += ajuste;
+    mensajeAjuste = " (+15% recargo por reservar con 1 día de anticipación)";
+  } else if (diferenciaDias > 15) {
+    ajuste = total * 0.10;
+    total -= ajuste;
+    mensajeAjuste = " (–10% por reserva anticipada)";
+  } else if (diferenciaDias > 7) {
+    ajuste = total * 0.05;
+    total -= ajuste;
+    mensajeAjuste = " (–5% por reserva anticipada)";
+  }
+}
+
+document.getElementById("totalPrecio").innerHTML = `<strong>Total:</strong> S/. ${total.toFixed(2)}${mensajeAjuste}`;
+ 
+  
 }
 
 // Evento envío de reserva
 document.getElementById("form-reserva").addEventListener("submit", (e) => {
+  
   e.preventDefault();
+
+  const turnosSeleccionadosInputs = document.querySelectorAll(".turno-checkbox:checked");
+  const fechaBase = document.getElementById("fecha-inicio").value;
+
+  // Obtener índices de turnos seleccionados
+  const indicesSeleccionados = Array.from(turnosSeleccionadosInputs)
+  .map(cb => parseInt(cb.id.split("_")[1]))
+  .sort((a, b) => a - b);
+
+  // Validar que sean consecutivos
+const sonConsecutivos = indicesSeleccionados.every((val, i, arr) => i === 0 || val === arr[i - 1] + 1);
+
+if (!sonConsecutivos) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Turnos no válidos',
+    text: 'Solo puedes seleccionar turnos consecutivos en una sola reserva. Si deseas turnos no consecutivos, debes hacer reservas por separado.',
+    confirmButtonColor: '#f39c12'
+  });
+  return;
+}
+
+  // Calcular fechaFin en base al último turno
+  const turnoFinal = turnosDisponibles[indicesSeleccionados[indicesSeleccionados.length - 1]];
+  const fechaFin = new Date(fechaBase);
+  const [horaFin, minutoFin] = turnoFinal.fin.split(":");
+  fechaFin.setHours(parseInt(horaFin), parseInt(minutoFin), 0, 0);
+
+  const turnosSeleccionados = Array.from(turnosSeleccionadosInputs).map(cb => {
+    const inicio = cb.dataset.inicio;
+    const fin = cb.dataset.fin;
+
+    return {
+      fecha: fechaBase,
+      horaInicio: inicio,
+      horaFin: fin
+    };
+  });
+  
+  
+  if (turnosSeleccionados.length === 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Turnos no seleccionados',
+      text: 'Por favor selecciona al menos un turno para la reserva.',
+      confirmButtonColor: '#f39c12'
+    });
+    return;
+  }
 
   const usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
   if (!usuario || usuario.rol !== "cliente") {
@@ -267,20 +418,57 @@ document.getElementById("form-reserva").addEventListener("submit", (e) => {
         return;
   }
 
-  const fechaInicio = document.getElementById("fecha-inicio").value;
-  const fechaFin = document.getElementById("fecha-fin").value;
-  const comentarios = document.getElementById("comentarios").value;
+      const fechaInicio = document.getElementById("fecha-inicio").value;
 
-  if (!fechaInicio || !fechaFin || new Date(fechaInicio) >= new Date(fechaFin)) {
-    //Alert Fecha Inválida
-    Swal.fire({
-          icon: 'warning',
-          title: 'Fechas Inválidas',
-          text: 'Por favor seleccione una fecha correcta.',
-          confirmButtonColor: '#f39c12'
+     if (!fechaInicio) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fecha no seleccionada',
+        text: 'Debes seleccionar una fecha de inicio.',
+        confirmButtonColor: '#f39c12'
+      });
+      return;
+    }
+
+   // Calcular diferencia de días
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      const fechaReserva = new Date(fechaInicio);
+      fechaReserva.setHours(0, 0, 0, 0);
+
+      const diferenciaDias = Math.floor((fechaReserva - hoy) / (1000 * 60 * 60 * 24));
+
+      if (diferenciaDias < 1) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Reserva demasiado cercana',
+          text: 'Las reservas deben realizarse al menos con 1 día de anticipación.',
+          confirmButtonColor: '#e74c3c'
         });
-    return;
+        return;
+      }
+
+      //  Ahora que ya tienes diferenciaDias, puedes calcular el ajuste
+
+      const totalTexto = document.getElementById("totalPrecio").textContent;
+      const total = totalTexto.replace("Total:", "").replace("S/.", "").trim();
+
+      let ajusteTexto = "";
+      let totalFinal = parseFloat(total);
+
+      if (diferenciaDias === 1) {
+        totalFinal *= 1.15;
+        ajusteTexto = "Recargo por reserva urgente (+15%)";
+      } else if (diferenciaDias > 15) {
+        totalFinal *= 0.90;
+        ajusteTexto = "Descuento por reserva anticipada (-10%)";
+      } else if (diferenciaDias > 7) {
+        totalFinal *= 0.95;
+        ajusteTexto = "Descuento por reserva anticipada (-5%)";
   }
+
+  totalFinal = totalFinal.toFixed(2);       
 
   const serviciosSeleccionados = [];
   document.querySelectorAll("#modal-reserva .form-check-input").forEach(cb => {
@@ -290,25 +478,25 @@ document.getElementById("form-reserva").addEventListener("submit", (e) => {
     }
   });
 
-  const totalTexto = document.getElementById("totalPrecio").textContent;
-  const total = totalTexto.replace("Total:", "").replace("S/.", "").trim();
+  const comentarios = document.getElementById("comentarios").value;
 
   const reserva = {
-    id: Date.now(), // ID único para rastreo
-    sala: salaSeleccionada.nombre,
-    fechaInicio,
-    fechaFin,
-    comentarios,
-    serviciosExtras: serviciosSeleccionados,
-    total,
-    email: usuario.email,
-    nombre: usuario.nombre,
-    telefono: usuario.telefono,
-    rol: usuario.rol,
-    cancelada: false, 
-    fechaCreacion: new Date().toISOString()
-  };
-
+  id: Date.now(),
+  sala: salaSeleccionada.nombre,
+  fechaInicio,
+  fechaFin: fechaFin.toISOString(),
+  comentarios,
+  serviciosExtras: serviciosSeleccionados,
+  turnos: turnosSeleccionados, // <<--- turnos con hora y fecha exacta
+  total: totalFinal,
+  ajuste: ajusteTexto,
+  email: usuario.email,
+  nombre: usuario.nombre,
+  telefono: usuario.telefono,
+  rol: usuario.rol,
+  cancelada: false, 
+  fechaCreacion: new Date().toISOString()
+};
 
   let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 
@@ -342,6 +530,7 @@ if (yaExiste) {
     <p><strong>Sala:</strong> ${reserva.sala}</p>
     <p><strong>Inicio:</strong> ${new Date(reserva.fechaInicio).toLocaleString()}</p>
     <p><strong>Fin:</strong> ${new Date(reserva.fechaFin).toLocaleString()}</p>
+    ${reserva.ajuste ? `<p><strong>${reserva.ajuste}</strong></p>` : ""}
     <p><strong>Total:</strong> S/. ${reserva.total}</p>
   `,
   confirmButtonColor: '#1abc9c'
@@ -362,52 +551,73 @@ document.querySelectorAll("#filter-buttons button").forEach(btn => {
 // Inicializar
 document.addEventListener("DOMContentLoaded", () => {
   mostrarSalas("todos");
+
+  document.getElementById("semana-anterior").addEventListener("click", () => {
+  fechaBaseCalendario.setDate(fechaBaseCalendario.getDate() - 7);
+  generarCalendarioDisponibilidad(salaSeleccionada.nombre, fechaBaseCalendario);
+});
+
+  document.getElementById("semana-siguiente").addEventListener("click", () => {
+  fechaBaseCalendario.setDate(fechaBaseCalendario.getDate() + 7);
+  generarCalendarioDisponibilidad(salaSeleccionada.nombre, fechaBaseCalendario);
+});
+
   document.querySelectorAll("#modal-reserva input[type=checkbox]").forEach(cb => {
     cb.addEventListener("change", calcularTotal);
   });
 });
 
-function generarCalendarioDisponibilidad(nombreSala) {
+let fechaBaseCalendario = obtenerLunes(new Date()); // comienza en esta semana
+
+function generarCalendarioDisponibilidad(nombreSala, fechaBase = fechaBaseCalendario) {
   const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 
-  // Crear estructura básica
   const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-  const horas = Array.from({ length: 15 }, (_, i) => `${8 + i}:00`);
-
   const tabla = document.createElement("table");
   tabla.className = "table table-bordered text-center align-middle";
-  
-  // Cabecera
+
+  // Cabecera con días + fechas reales
   const thead = document.createElement("thead");
   const filaCabecera = document.createElement("tr");
-  filaCabecera.innerHTML = "<th>Hora</th>" + dias.map(d => `<th>${d}</th>`).join("");
+  filaCabecera.innerHTML = "<th>Turno</th>";
+
+  const fechasSemana = [];
+
+  for (let i = 0; i < 7; i++) {
+    const fecha = new Date(fechaBase);
+    fecha.setDate(fecha.getDate() + i);
+    fechasSemana.push(new Date(fecha));
+
+    const diaTexto = `${dias[i]}<br><small>${fecha.toLocaleDateString()}</small>`;
+    filaCabecera.innerHTML += `<th>${diaTexto}</th>`;
+  }
+
   thead.appendChild(filaCabecera);
   tabla.appendChild(thead);
 
-  // Cuerpo
+  // Cuerpo con turnos
   const tbody = document.createElement("tbody");
 
-  horas.forEach(hora => {
+  turnosDisponibles.forEach(turno => {
     const fila = document.createElement("tr");
-    fila.innerHTML = `<td><strong>${hora}</strong></td>`;
+    fila.innerHTML = `<td><strong>${turno.inicio} – ${turno.fin}</strong></td>`;
 
-    dias.forEach((dia, index) => {
-      const celda = document.createElement("td");
+    fechasSemana.forEach(fecha => {
+      const inicioTurno = new Date(fecha);
+      const [hIni, mIni] = turno.inicio.split(":");
+      inicioTurno.setHours(parseInt(hIni), parseInt(mIni), 0, 0);
 
-      const ahora = new Date();
-      const inicioSemana = new Date(ahora.setDate(ahora.getDate() - ahora.getDay() + 1)); // lunes
-
-      const fechaHora = new Date(inicioSemana);
-      fechaHora.setDate(fechaHora.getDate() + index); // sumar días
-      const [h, m] = hora.split(":");
-      fechaHora.setHours(h, m);
+      const finTurno = new Date(fecha);
+      const [hFin, mFin] = turno.fin.split(":");
+      finTurno.setHours(parseInt(hFin), parseInt(mFin), 0, 0);
 
       const ocupado = reservas.some(r =>
         r.sala === nombreSala &&
-        new Date(r.fechaInicio) <= fechaHora &&
-        new Date(r.fechaFin) > fechaHora
+        new Date(r.fechaInicio) <= inicioTurno &&
+        new Date(r.fechaFin) > inicioTurno
       );
 
+      const celda = document.createElement("td");
       celda.textContent = ocupado ? "Ocupado" : "Libre";
       celda.className = ocupado ? "bg-danger text-white" : "bg-success text-white";
       fila.appendChild(celda);
@@ -418,12 +628,26 @@ function generarCalendarioDisponibilidad(nombreSala) {
 
   tabla.appendChild(tbody);
 
-  // Mostrar en el DOM
+  //mostrar en el DOM
+
   const contenedor = document.getElementById("calendario-disponibilidad");
   contenedor.innerHTML = "";
   contenedor.appendChild(tabla);
+
+  // Actualizar el rango de fechas arriba del calendario
+  const inicio = fechasSemana[0].toLocaleDateString();
+  const fin = fechasSemana[6].toLocaleDateString();
+  document.getElementById("rango-semana").textContent = `Semana: ${inicio} – ${fin}`;
 }
 
+function obtenerLunes(fecha) {
+  const d = new Date(fecha);
+  const dia = d.getDay(); // 0 = domingo, 1 = lunes
+  const diferencia = dia === 0 ? -6 : 1 - dia;
+  d.setDate(d.getDate() + diferencia);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
 
 
 

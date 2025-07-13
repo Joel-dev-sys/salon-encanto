@@ -27,57 +27,59 @@
   <main class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
   <div class="login-form" id="form-registro">
     <h3 class="text-center mb-4">Registro de Usuario</h3>
+
+
     <form id="registro-form">
-      <div class="mb-3">
-  <label for="nombres" class="form-label">Nombres</label>
-  <input type="text" class="form-control" id="nombres" name="nombres" required>
-</div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="nombres" class="form-label">Nombres</label>
+      <input type="text" class="form-control" id="nombres" name="nombres" required>
+    </div>
 
-<div class="mb-3">
-  <label for="apellidos" class="form-label">Apellidos</label>
-  <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="apellidos" class="form-label">Apellidos</label>
+      <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+    </div>
 
-<div class="mb-3">
-  <label for="email" class="form-label">Correo electrónico</label>
-  <input type="email" class="form-control" id="email" name="email" required>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
 
-<div class="mb-3">
- <label for="celular" class="form-label">Celular</label>
- <input type="tel" class="form-control" id="celular" name="celular" pattern="[0-9]{9}" maxlength="9" required>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="celular" class="form-label">Celular</label>
+      <input type="tel" class="form-control" id="celular" name="celular" pattern="[0-9]{9}" maxlength="9" required>
+    </div>
 
-<div class="mb-3">
- <label for="dni" class="form-label">DNI</label>
- <input type="text" class="form-control" id="dni" name="dni" pattern="[0-9]{8}" maxlength="8" required>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="dni" class="form-label">DNI</label>
+      <input type="text" class="form-control" id="dni" name="dni" pattern="[0-9]{8}" maxlength="8" required>
+    </div>
 
+    <div class="col-md-6 mb-3">
+      <label for="nacimiento" class="form-label">Fecha de nacimiento</label>
+      <input type="date" class="form-control" id="nacimiento" name="nacimiento" required>
+    </div>
 
-<div class="mb-3">
-  <label for="nacimiento" class="form-label">Fecha de nacimiento</label>
-  <input type="date" class="form-control" id="nacimiento" name="nacimiento" required>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="genero" class="form-label">Género</label>
+      <select class="form-select" id="genero" name="genero" required>
+        <option value="">Seleccionar</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Femenino">Femenino</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
 
-<div class="mb-3">
-  <label for="genero" class="form-label">Género</label>
-  <select class="form-select" id="genero" name="genero" required>
-    <option value="">Seleccionar</option>
-    <option value="Masculino">Masculino</option>
-    <option value="Femenino">Femenino</option>
-    <option value="Otro">Otro</option>
-  </select>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="direccion" class="form-label">Dirección</label>
+      <input type="text" class="form-control" id="direccion" name="direccion" required>
+    </div>
 
-<div class="mb-3">
-  <label for="direccion" class="form-label">Dirección</label>
-  <input type="text" class="form-control" id="direccion" name="direccion" required>
-</div>
-
-<div class="mb-3">
-  <label for="contrasena" class="form-label">Contraseña</label>
-  <input type="password" class="form-control" id="contrasena" name="contrasena" required>
-</div>
+    <div class="col-md-6 mb-3">
+      <label for="contrasena" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+    </div>
 
       </div>
       <div class="d-grid">
