@@ -1,6 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const db = require('./db'); // Asegúrate de que este archivo esté en la misma carpeta
+import express from 'express';
+import cors from 'cors';
+import mysql from 'mysql2';
+
+ // Asegúrate de que este archivo esté en la misma carpeta
 
 const app = express();
 app.use(cors());
@@ -80,7 +82,7 @@ app.post('/login', (req, res) => {
 
 
 // Iniciar el servidor
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor activo en el puerto ${PORT}`);
 });
