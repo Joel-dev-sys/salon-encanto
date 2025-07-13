@@ -1,7 +1,8 @@
 {
-    "name": "nombre-de-tu-proyecto",
+    "name": "diseno_web",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
