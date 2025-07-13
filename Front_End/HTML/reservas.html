@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reservas - MiEmpresa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../CSS/estilos.css" />
+</head>
+<body>
+  <header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="../HTML/index.html">MiEmpresa</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto" id="nav-dinamico">
+          <!-- Aquí se insertan los botones dinámicos -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="container my-5">
+    <h2 class="text-center mb-4">Reservar Sala</h2>
+
+    <div class="d-flex justify-content-center mb-4" id="filter-buttons">
+      <button class="btn btn-outline-primary me-2 active" data-filter="todos">Todos</button>
+      <button class="btn btn-outline-primary me-2" data-filter="pequeno">Pequeños</button>
+      <button class="btn btn-outline-primary me-2" data-filter="mediano">Medianos</button>
+      <button class="btn btn-outline-primary" data-filter="grande">Grandes</button>
+    </div>
+
+    <div class="row" id="contenedor-tarjetas"></div>
+  </main>
+
+  <!-- Modal de Reserva -->
+  <div class="modal fade" id="modal-reserva" tabindex="-1" aria-labelledby="modalReservaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <form id="form-reserva">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalReservaLabel">Confirmar Reserva</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="fecha-inicio" class="form-label">Fecha de inicio:</label>
+              <input type="datetime-local" class="form-control" id="fecha-inicio" required>
+            </div>
+            <div class="mb-3">
+              <label for="fecha-fin" class="form-label">Fecha de fin:</label>
+              <input type="datetime-local" class="form-control" id="fecha-fin" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Horarios disponibles:</label>
+            <div id="calendario-disponibilidad" class="table-responsive"></div>
+            </div>
+            <fieldset class="mb-3">
+              <legend>Servicios Adicionales</legend>
+               <div id="servicios-adicionales"></div>
+            </fieldset>
+            <div class="mb-3">
+              <label for="comentarios" class="form-label">Comentarios:</label>
+              <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
+            </div>
+            <p id="precioBase"><strong>Precio base:</strong> S/. 0.00</p>
+            <p id="totalPrecio"><strong>Total:</strong> S/. 0.00</p>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-light text-center py-4">
+    <div class="container">
+      <p>&copy; 2025 MiEmpresa. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../JavaScript/sesion.js"></script>
+  <script src="../JavaScript/reserva.js"></script>
+
+</body>
+</html>
+
+
