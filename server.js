@@ -13,9 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'Front_End')));
-//app.use('/CSS', express.static(path.join(__dirname, 'Front_End', 'CSS')));
-//app.use('/JavaScript', express.static(path.join(__dirname, 'Front_End', 'JavaScript')));
-//app.use('/IMG', express.static(path.join(__dirname, 'Front_End', 'IMG')));
+app.use('/CSS', express.static(path.join(__dirname, 'Front_End', 'CSS')));
+app.use('/JavaScript', express.static(path.join(__dirname, 'Front_End', 'JavaScript')));
+app.use('/IMG', express.static(path.join(__dirname, 'Front_End', 'IMG')));
 
 // ✅ Ruta principal
 app.get('/', (req, res) => {
