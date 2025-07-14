@@ -1,7 +1,8 @@
-import mysql from 'mysql2'
+import mysql from 'mysql2';
 
 const db = mysql.createConnection({
-  host: 'ballast.proxy.rlwy.net', // ejemplo: mi-db.abc123xyz.us-east-1.rds.amazonaws.com
+  host: 'ballast.proxy.rlwy.net',
+  port: 46167, // Usa aquí el puerto que te da Railway
   user: 'root',
   password: 'gerDubYsEhQyuhswycEAmtnkzWdFmmhG',
   database: 'railway'
@@ -9,8 +10,8 @@ const db = mysql.createConnection({
 
 db.connect(err => {
   if (err) throw err;
-  console.log('Conectado a MySQL');
+  console.log('Conectado a MySQL desde db.js');
 });
 
-module.exports = db;
+export default db;
 

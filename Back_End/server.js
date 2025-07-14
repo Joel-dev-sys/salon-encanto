@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import mysql from 'mysql2';
+import db from './db.js'; // ✅ este es necesario
 
  // Asegúrate de que este archivo esté en la misma carpeta
 
@@ -22,16 +23,16 @@ app.post('/registro', (req, res) => {
   console.log('Datos recibidos:', req.body); // Muestra los datos en la consola para verificar
 
   const {
-    nombres, apellidos, email, celular, dni,
-    fecha_nacimiento, genero, direccion, contrasena_hash
+    nombre, apellido, email, celular, dni,
+    fecha_nacimiento, genero, direccion, contrasena
   } = req.body;
 
   const sql = `
-    INSERT INTO Usuarios (nombres, apellidos, email, celular, dni, fecha_nacimiento, genero, direccion, contrasena_hash)
+    INSERT INTO Usuarios (nombre, apellido, email, celular, dni, direccion, fecha_nacimiento, genero, contrasena)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  const values = [nombres, apellidos, email, celular, dni, fecha_nacimiento, genero, direccion, contrasena_hash];
+  const values = [nombre, apellido, email, celular, dni, direccion, fecha_nacimiento, genero, contrasena];
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -46,7 +47,7 @@ app.post('/registro', (req, res) => {
 //Login
 
 app.post('/login', (req, res) => {
-  const { email, contrasena } = req.body;
+  const {email,contrasena} = req.body;
 
   const sql = "SELECT * FROM Usuarios WHERE email = ?";
   db.query(sql, [email], (err, results) => {
@@ -62,7 +63,7 @@ app.post('/login', (req, res) => {
     const usuario = results[0];
 
     // Validar contraseña (se recomienda hashearla con bcrypt en el futuro)
-    if (usuario.contrasena_hash !== contrasena) {
+    if (usuario.contrasena!== contrasena) {
       return res.status(400).json({ success: false, error: "Correo o contraseña incorrectos." });
     }
 
@@ -71,8 +72,8 @@ app.post('/login', (req, res) => {
     res.json({
       success: true,
       usuario: {
-        nombres: usuario.nombres,
-        apellidos: usuario.apellidos,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
         email: usuario.email,
         rol: rol
       }
