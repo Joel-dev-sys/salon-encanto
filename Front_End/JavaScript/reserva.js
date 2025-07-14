@@ -34,7 +34,7 @@ const salas = [
     servicios: ["Mobiliario","WiFi","Proyector","Pizarras"],
     precio: 120,
     categoria: "pequeno",
-    imagen: "/IMG/Sala-Creativa.jpg"
+    imagen: "/IMG/sala-Creativa.jpg"
   },
   {
     nombre: "Sala de Capacitación",
