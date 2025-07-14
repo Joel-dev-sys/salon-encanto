@@ -7,23 +7,23 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!usuario) {
     // Visitante
     nav.innerHTML = `
-      <li class="nav-item"><a class="nav-link" href="/HTML/index.html">Inicio</a></li>
+      <li class="nav-item"><a class="nav-link" href="/index.html">Inicio</a></li>
       <li class="nav-item"><a class="nav-link" href="#">Ubicación</a></li>
       <li class="nav-item"><a class="nav-link" href="#">Contáctenos</a></li>
-      <li class="nav-item"><a class="nav-link" href="/HTML/login.html">Iniciar Sesión</a></li>
+      <li class="nav-item"><a class="nav-link" href="/login.html">Iniciar Sesión</a></li>
     `;
   } else if (usuario.rol === "cliente") {
     nav.innerHTML = `
-      <li class="nav-item"><a class="nav-link" href="/HTML/index.html">Inicio</a></li>
-      <li class="nav-item"><a class="nav-link" href="/HTML/reservas.html">Reservar</a></li>
-      <li class="nav-item"><a class="nav-link" href="/HTML/CmisReservas.html">Mis reservas</a></li>
+      <li class="nav-item"><a class="nav-link" href="/index.html">Inicio</a></li>
+      <li class="nav-item"><a class="nav-link" href="/reservas.html">Reservar</a></li>
+      <li class="nav-item"><a class="nav-link" href="/CmisReservas.html">Mis reservas</a></li>
       <li class="nav-item"><a class="nav-link" href="#">${usuario.nombre}</a></li>
       <li class="nav-item"><a class="nav-link" href="#" onclick="cerrarSesion()">Cerrar Sesión</a></li>
     `;
   } else if (usuario.rol === "admin") {
     nav.innerHTML = `
-      <li class="nav-item"><a class="nav-link" href="/HTML/index.html">Inicio</a></li>
-      <li class="nav-item"><a class="nav-link" href="/HTML/admin.html">Ver reservas</a></li>
+      <li class="nav-item"><a class="nav-link" href="/index.html">Inicio</a></li>
+      <li class="nav-item"><a class="nav-link" href="/admin.html">Ver reservas</a></li>
       <li class="nav-item"><a class="nav-link" href="#">${usuario.nombre}</a></li>
       <li class="nav-item"><a class="nav-link" href="#" onclick="cerrarSesion()">Cerrar Sesión</a></li>
     `;
@@ -53,11 +53,8 @@ function cerrarSesion() {
         showConfirmButton: false
       });
       setTimeout(() => {
-        window.location.href = "/HTML/index.html";
+        window.location.href = "/index.html";
       }, 1500);
     }
   });
 }
-
-
-
