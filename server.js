@@ -12,15 +12,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Rutas estáticas correctas apuntando fuera del Back_End
-app.use(express.static(path.join(__dirname, '..', 'Front_End', 'HTML')));
-app.use('/CSS', express.static(path.join(__dirname, '..', 'Front_End', 'CSS')));
-app.use('/JavaScript', express.static(path.join(__dirname, '..', 'Front_End', 'JavaScript')));
-app.use('/IMG', express.static(path.join(__dirname, '..', 'Front_End', 'IMG')));
+app.use(express.static(path.join(__dirname, 'Front_End', 'HTML')));
+app.use('/CSS', express.static(path.join(__dirname, 'Front_End', 'CSS')));
+app.use('/JavaScript', express.static(path.join(__dirname, 'Front_End', 'JavaScript')));
+app.use('/IMG', express.static(path.join(__dirname, 'Front_End', 'IMG')));
 
-// ✅ Ruta principal para servir index.html
+// ✅ Ruta principal
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'Front_End', 'HTML', 'index.html'));
+  res.sendFile(path.join(__dirname, 'Front_End', 'HTML', 'index.html'));
 });
 
 // Ping para test
