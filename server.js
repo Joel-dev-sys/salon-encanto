@@ -34,7 +34,7 @@ app.get('/ping', (req, res) => {
 app.post('/registro', (req, res) => {
   const {
     nombre, apellido, email, telefono, dni,
-    direccion, fecha_nacimiento, genero, contrasena_hash
+    direccion, fecha_nacimiento, genero, contrasena
   } = req.body;
 
   const sql = `
@@ -42,7 +42,7 @@ app.post('/registro', (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'cliente')
   `;
 
-  const values = [nombre, apellido, email, telefono, dni, direccion, fecha_nacimiento, genero, contrasena_hash];
+  const values = [nombre, apellido, email, telefono, dni, direccion, fecha_nacimiento, genero, contrasena];
 
   db.query(sql, values, (err, result) => {
     if (err) {
