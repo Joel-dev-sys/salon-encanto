@@ -7,7 +7,7 @@ const salas = [
     servicios: ["Mobiliario","WiFi", "Proyector","Pizarra"],
     precio: 150,
     categoria: "pequeno",
-    imagen: "../IMG/sala-ejecutiva.jpg"
+    imagen: "/IMG/sala-ejecutiva.jpg"
   },
   {
     nombre: "Sala de Conferencias",
@@ -16,7 +16,7 @@ const salas = [
     servicios: ["Mobiliario","WiFi", "Proyector", "Sonido"],
     precio: 300,
     categoria: "mediano",
-    imagen: "../IMG/Sala-de-conferencias.jpg"
+    imagen: "/IMG/Sala-de-conferencias.jpg"
   },
   {
     nombre: "Salón de Eventos",
@@ -25,7 +25,7 @@ const salas = [
     servicios: ["WiFi","Sonido","Iluminación","30 Sillas"],
     precio: 500,
     categoria: "grande",
-    imagen: "../IMG/Sala-de-eventos.jpg"
+    imagen: "/IMG/Sala-de-eventos.jpg"
   },
   {
     nombre: "Sala Creativa",
@@ -34,7 +34,7 @@ const salas = [
     servicios: ["Mobiliario","WiFi","Proyector","Pizarras"],
     precio: 120,
     categoria: "pequeno",
-    imagen: "../IMG/Sala-creativa.jpg"
+    imagen: "/IMG/Sala-creativa.jpg"
   },
   {
     nombre: "Sala de Capacitación",
@@ -43,7 +43,7 @@ const salas = [
     servicios: ["Mobiliario","WiFi","Proyector", "Sonido"],
     precio: 250,
     categoria: "mediano",
-    imagen: "../IMG/Sala-de-capacitación.jpg"
+    imagen: "/IMG/Sala-de-capacitación.jpg"
   },
   {
     nombre: "Auditorio Principal",
@@ -52,7 +52,7 @@ const salas = [
     servicios: ["WiFi", "Sonido","Iluminación","70 Sillas"],
     precio: 800,
     categoria: "grande",
-    imagen: "../IMG/Auditorio-principal.jpg"
+    imagen: "/IMG/Auditorio-principal.jpg"
   }
 ];
 

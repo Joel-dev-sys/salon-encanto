@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             text: "Ahora puedes iniciar sesión con tu cuenta.",
             confirmButtonColor: "#1abc9c"
           }).then(() => {
-            window.location.href = "../HTML/login.html";
+            window.location.href = "/login.html";
           });
         } else {
           Swal.fire({
@@ -86,9 +86,9 @@ async function iniciarSesion(correo, contrasena) {
         confirmButtonColor: "#1abc9c"
       }).then(() => {
         if (usuarioActivo.rol === "admin") {
-          window.location.href = "../HTML/admin.html";
+          window.location.href = "/admin.html";
         } else {
-          window.location.href = "../HTML/reservas.html";
+          window.location.href = "/reservas.html";
         }
       });
     } else {
