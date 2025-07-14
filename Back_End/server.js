@@ -12,20 +12,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔹 Servir frontend desde carpeta Front_End
-app.use(express.static(path.join(__dirname, 'Front_End')));
+// ✅ Rutas estáticas correctas apuntando fuera del Back_End
+app.use(express.static(path.join(__dirname, '..', 'Front_End', 'HTML')));
+app.use('/CSS', express.static(path.join(__dirname, '..', 'Front_End', 'CSS')));
+app.use('/JavaScript', express.static(path.join(__dirname, '..', 'Front_End', 'JavaScript')));
+app.use('/IMG', express.static(path.join(__dirname, '..', 'Front_End', 'IMG')));
 
-// Ruta raíz que muestra index.html
+// ✅ Ruta principal para servir index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Front_End', 'HTML', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'Front_End', 'HTML', 'index.html'));
 });
 
-// 🔹 Ruta principal que devuelve index.html
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Front_End', 'HTML', 'index.html'));
-});
-
-// Ping para testear conexión
+// Ping para test
 app.get('/ping', (req, res) => {
   db.query('SELECT 1 + 1 AS resultado', (err, result) => {
     if (err) return res.status(500).send('Error en la conexión a la base de datos');
@@ -33,7 +31,7 @@ app.get('/ping', (req, res) => {
   });
 });
 
-// Registro de usuario
+// Registro
 app.post('/registro', (req, res) => {
   const {
     nombre, apellido, email, telefono, dni,
@@ -85,7 +83,8 @@ app.post('/login', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+// Escucha en puerto que define Railway (o 8080 por defecto)
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Servidor activo en el puerto ${PORT}`);
 });
