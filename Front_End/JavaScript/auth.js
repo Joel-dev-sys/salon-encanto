@@ -1,6 +1,6 @@
 // auth.js
 
-//Registro 
+// Registro
 document.addEventListener("DOMContentLoaded", () => {
   const formRegistro = document.getElementById("registro-form");
 
@@ -9,15 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const data = {
-        nombres: document.getElementById("nombres").value.trim(),
-        apellidos: document.getElementById("apellidos").value.trim(),
+        nombre: document.getElementById("nombres").value.trim(),
+        apellido: document.getElementById("apellidos").value.trim(),
         email: document.getElementById("email").value.trim(),
-        celular: document.getElementById("celular").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
         dni: document.getElementById("dni").value.trim(),
         fecha_nacimiento: document.getElementById("nacimiento").value,
         genero: document.getElementById("genero").value,
         direccion: document.getElementById("direccion").value.trim(),
-        contrasena_hash: document.getElementById("contrasena").value
+        contrasena: document.getElementById("contrasena").value
       };
 
       try {
@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// Inicio de sesión
 async function iniciarSesion(correo, contrasena) {
   try {
     const response = await fetch("http://localhost:3000/login", {
@@ -70,7 +72,7 @@ async function iniciarSesion(correo, contrasena) {
 
     if (result.success) {
       const usuarioActivo = {
-        nombre: `${result.usuario.nombres} ${result.usuario.apellidos}`,
+        nombre: `${result.usuario.nombre} ${result.usuario.apellido}`,
         email: result.usuario.email,
         rol: result.usuario.rol
       };
@@ -107,9 +109,3 @@ async function iniciarSesion(correo, contrasena) {
     });
   }
 }
-
-
-
-
-
-

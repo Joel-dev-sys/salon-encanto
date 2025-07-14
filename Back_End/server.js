@@ -23,16 +23,16 @@ app.post('/registro', (req, res) => {
   console.log('Datos recibidos:', req.body); // Muestra los datos en la consola para verificar
 
   const {
-    nombre, apellido, email, celular, dni,
+    nombre, apellido, email, telefono, dni,
     fecha_nacimiento, genero, direccion, contrasena
   } = req.body;
 
   const sql = `
-    INSERT INTO Usuarios (nombre, apellido, email, celular, dni, direccion, fecha_nacimiento, genero, contrasena)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO Usuarios (nombre, apellido, email, telefono, dni, direccion, fecha_nacimiento, genero, contrasena, rol)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  const values = [nombre, apellido, email, celular, dni, direccion, fecha_nacimiento, genero, contrasena];
+  const values = [nombre, apellido, email, telefono, dni, direccion, fecha_nacimiento, genero, contrasena, 'cliente'];
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -67,7 +67,7 @@ app.post('/login', (req, res) => {
       return res.status(400).json({ success: false, error: "Correo o contraseña incorrectos." });
     }
 
-    const rol = usuario.email === "admin@admin.com" ? "admin" : "cliente";
+   const rol = usuario.rol;
 
     res.json({
       success: true,

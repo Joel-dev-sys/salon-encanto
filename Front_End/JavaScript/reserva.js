@@ -569,6 +569,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let fechaBaseCalendario = obtenerLunes(new Date()); // comienza en esta semana
 
+function normalizar(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 function generarCalendarioDisponibilidad(nombreSala, fechaBase = fechaBaseCalendario) {
   const reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 
@@ -612,7 +616,7 @@ function generarCalendarioDisponibilidad(nombreSala, fechaBase = fechaBaseCalend
       finTurno.setHours(parseInt(hFin), parseInt(mFin), 0, 0);
 
       const ocupado = reservas.some(r =>
-        r.sala === nombreSala &&
+        normalizar(r.sala) === normalizar(nombreSala) &&
         new Date(r.fechaInicio) <= inicioTurno &&
         new Date(r.fechaFin) > inicioTurno
       );
