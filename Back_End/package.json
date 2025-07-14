@@ -1,10 +1,10 @@
 {
-    "name": "salon-encanto",
+  "name": "salon-encanto",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "Back_End/server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node Back_End/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
