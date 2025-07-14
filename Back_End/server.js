@@ -13,10 +13,12 @@ app.use(cors());
 app.use(express.json());
 
 // 🔹 Servir frontend desde carpeta Front_End
-app.use(express.static(path.join(__dirname, 'Front_End', 'HTML')));
-app.use('/CSS', express.static(path.join(__dirname, 'Front_End', 'CSS')));
-app.use('/JavaScript', express.static(path.join(__dirname, 'Front_End', 'JavaScript')));
-app.use('/IMG', express.static(path.join(__dirname, 'Front_End', 'IMG')));
+app.use(express.static(path.join(__dirname, 'Front_End')));
+
+// Ruta raíz que muestra index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Front_End', 'HTML', 'index.html'));
+});
 
 // 🔹 Ruta principal que devuelve index.html
 app.get('/', (req, res) => {
