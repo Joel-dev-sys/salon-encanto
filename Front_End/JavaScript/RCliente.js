@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!usuarioActual || usuarioActual.rol !== "cliente") {
     alert("Debes iniciar sesión como cliente para ver tus reservas.");
-    window.location.href = "../HTML/login.html";
+    window.location.href = "/HTML/login.html";
     return;
   }
 

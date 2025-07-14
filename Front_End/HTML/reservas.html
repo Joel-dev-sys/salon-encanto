@@ -5,25 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reservas - MiEmpresa</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../CSS/estilos.css" />
+  <link rel="stylesheet" href="/CSS/estilos.css" />
 </head>
 <body>
   <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="../HTML/index.html">MiEmpresa</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto" id="nav-dinamico">
-          <!-- Aquí se insertan los botones dinámicos -->
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="/index.html">MiEmpresa</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto" id="nav-dinamico">
+            <!-- Aquí se insertan los botones dinámicos -->
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-</header>
-
+    </nav>
+  </header>
 
   <main class="container my-5">
     <h2 class="text-center mb-4">Reservar Sala</h2>
@@ -48,37 +47,38 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
           <div class="modal-body">
-
             <!-- FECHA DE RESERVA -->
             <div class="mb-3">
               <label for="fecha-inicio" class="form-label"><strong>Selecciona la fecha de la reserva:</strong></label>
               <input type="date" id="fecha-inicio" class="form-control" required onchange="calcularTotal()">
             </div>
 
-           <div class="mb-3">
-            <label class="form-label">Selecciona turnos:</label>
-            <div id="turnos-disponibles" class="form-group"></div>
+            <div class="mb-3">
+              <label class="form-label">Selecciona turnos:</label>
+              <div id="turnos-disponibles" class="form-group"></div>
             </div>
-          <div id="calendario-controles" class="d-flex justify-content-between align-items-center my-3">
-            <button id="semana-anterior" class="btn btn-outline-secondary btn-sm">← Semana anterior</button>
-            <span id="rango-semana" class="fw-bold"></span>
-            <button id="semana-siguiente" class="btn btn-outline-secondary btn-sm">Semana siguiente →</button>
-          </div>
+
+            <div id="calendario-controles" class="d-flex justify-content-between align-items-center my-3">
+              <button id="semana-anterior" class="btn btn-outline-secondary btn-sm">← Semana anterior</button>
+              <span id="rango-semana" class="fw-bold"></span>
+              <button id="semana-siguiente" class="btn btn-outline-secondary btn-sm">Semana siguiente →</button>
+            </div>
 
             <div class="mb-3">
-            <label class="form-label">Horarios disponibles:</label>
-            <div id="calendario-disponibilidad" class="table-responsive mb-3"></div>
-            
-            
+              <label class="form-label">Horarios disponibles:</label>
+              <div id="calendario-disponibilidad" class="table-responsive mb-3"></div>
+            </div>
 
             <fieldset class="mb-3">
-            <legend>Servicios Adicionales</legend>
-            <div id="servicios-adicionales" class="row"></div>
+              <legend>Servicios Adicionales</legend>
+              <div id="servicios-adicionales" class="row"></div>
             </fieldset>
+
             <div class="mb-3">
               <label for="comentarios" class="form-label">Comentarios:</label>
               <textarea class="form-control" id="comentarios" rows="3" placeholder="Opcional"></textarea>
             </div>
+
             <p id="precioBase"><strong>Precio base:</strong> S/. 0.00</p>
             <p id="totalPrecio"><strong>Total:</strong> S/. 0.00</p>
           </div>
@@ -100,12 +100,8 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="../JavaScript/sesion.js"></script>
-  <script src="../JavaScript/reserva.js"></script>
-
+  <script src="/JavaScript/sesion.js"></script>
+  <script src="/JavaScript/reserva.js"></script>
 </body>
 </html>
-
-

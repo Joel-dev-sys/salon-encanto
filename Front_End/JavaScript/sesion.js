@@ -53,7 +53,7 @@ function cerrarSesion() {
         showConfirmButton: false
       });
       setTimeout(() => {
-        window.location.href = "../HTML/index.html";
+        window.location.href = "/HTML/index.html";
       }, 1500);
     }
   });

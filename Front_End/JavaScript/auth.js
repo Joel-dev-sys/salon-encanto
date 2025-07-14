@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const response = await fetch("http://localhost:3000/registro", {
+        const response = await fetch("/registro", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Inicio de sesión
 async function iniciarSesion(correo, contrasena) {
   try {
-    const response = await fetch("http://localhost:3000/login", {
+    const response = await fetch("/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: correo, contrasena })
